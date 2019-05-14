@@ -1,15 +1,19 @@
-import { HttpRequestConfig } from './types';
-import { buildUrl } from './helpers/url';
+import { HttpRequestConfig } from './types'
+import { buildUrl } from './helpers/url'
+import { stringifyData } from './helpers/data'
+import { processHeaders } from './helpers/headers'
 
 function http(config: HttpRequestConfig): void {
-  const {url, methed='GET', params=null, data=null} = config;
-  let buildedUrl = url;
-  if (methed === 'GET'){
-    buildedUrl = buildUrl(url, params);
-  }
-  const xhr = new XMLHttpRequest();
-  xhr.open(methed, buildedUrl, true);
-  xhr.send(data);
+  config.url = buildUrl(config.url, config.params)
+  config.headers = processHeaders(config.headers, config.data)
+  config.data = stringifyData(config.data)
+  const { url, method = 'GET', headers, data = null } = config
+  const xhr = new XMLHttpRequest()
+  xhr.open(method, url, true)
+  Object.keys(headers).forEach(key => {
+    xhr.setRequestHeader(key, headers[key])
+  })
+  xhr.send(data)
 }
 
-export default http;
+export default http
