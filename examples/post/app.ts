@@ -1,13 +1,17 @@
 import http from '../../src/http';
 
-// http({
-//   url: '/base/post',
-//   method: 'POST',
-//   data: {
-//     a: 1,
-//     b: 2
-//   }
-// })
+http({
+  url: '/base/post',
+  method: 'POST',
+  responseType: 'json',
+  data: {
+    a: 1,
+    b: 2
+  }
+})
+.then(res => {
+  console.log(res);
+});
 
 
 http({
@@ -22,6 +26,9 @@ http({
       b: 2
     }
   })
+  .then(res => {
+    console.log(res);
+  });
 
 
 
